@@ -8,6 +8,4 @@
 .env*
 !.env*.example
 
-# tbls config (contains connection string)
-db/.tbls.yml
 
