@@ -11,5 +11,3 @@
 # tbls config (contains connection string)
 db/.tbls.yml
 
-# docs (generated / WIP)
-/docs/
