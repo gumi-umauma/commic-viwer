@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tbls doc:*)",
+      "Bash(tbls out:*)",
+      "Bash(npm run erd:*)"
+    ]
+  }
+}

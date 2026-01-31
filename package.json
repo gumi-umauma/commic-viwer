@@ -1,0 +1,18 @@
+{
+  "name": "commic-viewer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "erd": "liam erd build --format tbls --input db/out/schema.json --output-dir docs/db/erd"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@fission-ai/openspec": "^1.1.0",
+    "@liam-hq/cli": "^0.7.24"
+  }
+}
