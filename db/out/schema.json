@@ -1,5 +1,5 @@
 {
-  "name": "comic_viewer",
+  "name": "comic_viewer2",
   "tables": [
     {
       "name": "public.comic",
