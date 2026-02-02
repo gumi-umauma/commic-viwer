@@ -1,0 +1,29 @@
+dsn: ${TBLS_DSN}
+docPath: docs/db
+
+# カスタムテンプレート（コメント列を2列目に配置）
+templates:
+  md:
+    table: 'db/tbls/table.md.tmpl'
+
+dict:
+  Tables: テーブル一覧
+  Description: 概要
+  Columns: カラム一覧
+  Indexes: インデック一覧
+  Constraints: 制約一覧
+  Triggers: トリガー
+  Relations: ER図
+  Name: 名称
+  Comment: コメント
+  Type: タイプ
+  Default: デフォルト値
+  Children: 子テーブル
+  Parents: 親テーブル
+  Definition: 定義
+  Table Definition: テーブル定義
+
+er:
+  skip: true
+
+disableOutputSchema: true

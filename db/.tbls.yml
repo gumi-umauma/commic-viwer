@@ -1,2 +1,0 @@
-dsn: ${TBLS_DSN}
-docPath: ../docs/db
