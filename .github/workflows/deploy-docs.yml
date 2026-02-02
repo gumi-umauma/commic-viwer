@@ -23,39 +23,37 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
 
-      - name: Check if DB schema changed
-        id: schema-check
-        run: |
-          if git diff --name-only HEAD~1 HEAD | grep -qE '^db/tbls/'; then
-            echo "changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "changed=false" >> $GITHUB_OUTPUT
-          fi
+      - name: Cache DB docs
+        id: cache-db-docs
+        uses: actions/cache@v4
+        with:
+          path: |
+            docs/db/tables
+            docs/db/erd
+          key: db-docs-${{ hashFiles('db/tbls/schema.json') }}
 
       - name: Setup tbls
-        if: steps.schema-check.outputs.changed == 'true'
+        if: steps.cache-db-docs.outputs.cache-hit != 'true'
         uses: k1LoW/setup-tbls@v1
 
       - name: Setup Node.js
-        if: steps.schema-check.outputs.changed == 'true'
+        if: steps.cache-db-docs.outputs.cache-hit != 'true'
         uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: "npm"
 
       - name: Install dependencies
-        if: steps.schema-check.outputs.changed == 'true'
+        if: steps.cache-db-docs.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Generate DB docs (tbls)
-        if: steps.schema-check.outputs.changed == 'true'
+        if: steps.cache-db-docs.outputs.cache-hit != 'true'
         run: tbls doc --rm-dist --config db/tbls/.tbls.yml json://db/tbls/schema.json
 
       - name: Generate ERD
-        if: steps.schema-check.outputs.changed == 'true'
+        if: steps.cache-db-docs.outputs.cache-hit != 'true'
         run: npm run erd
 
       - name: Setup Pages
