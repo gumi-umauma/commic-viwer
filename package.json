@@ -6,7 +6,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "erd": "liam erd build --format tbls --input db/out/schema.json --output-dir docs/db/erd"
+    "erd": "liam erd build --format tbls --input db/tbls/schema.json --output-dir docs/db/erd"
   },
   "author": "",
   "license": "ISC",
