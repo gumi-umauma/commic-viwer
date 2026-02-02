@@ -1,5 +1,5 @@
 dsn: ${TBLS_DSN}
-docPath: docs/db
+docPath: docs/db/tables
 
 # カスタムテンプレート（コメント列を2列目に配置）
 templates:

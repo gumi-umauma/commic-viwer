@@ -43,3 +43,5 @@ npm run erd
 | `db/tbls/.tbls.yml` | tbls設定 |
 | `db/tbls/table.md.tmpl` | カスタムテンプレート（コメント列を2列目に配置） |
 | `docs/db/` | 公開用ドキュメント（GitHub Pages） |
+| `docs/db/tables/` | tblsが生成するテーブル定義 |
+| `docs/db/erd/` | Liam ERDが生成するER図（SPA） |

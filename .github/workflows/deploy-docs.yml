@@ -50,13 +50,13 @@ jobs:
         if: steps.schema-check.outputs.changed == 'true'
         run: npm ci
 
+      - name: Generate DB docs (tbls)
+        if: steps.schema-check.outputs.changed == 'true'
+        run: tbls doc --rm-dist --config db/tbls/.tbls.yml json://db/tbls/schema.json
+
       - name: Generate ERD
         if: steps.schema-check.outputs.changed == 'true'
         run: npm run erd
-
-      - name: Generate DB docs
-        if: steps.schema-check.outputs.changed == 'true'
-        run: tbls doc --rm-dist --config db/tbls/.tbls.yml json://db/tbls/schema.json
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

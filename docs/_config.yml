@@ -1,3 +1,6 @@
 title: Comic Viewer Docs
 theme: minima
 baseurl: "/commic-viwer"
+
+# ヘッダーナビゲーションに表示するページを明示的に指定（空にして非表示）
+header_pages: []
