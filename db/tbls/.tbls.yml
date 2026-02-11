@@ -1,17 +1,16 @@
 dsn: ${TBLS_DSN}
 docPath: docs/db/tables
 
-# カスタムテンプレート（コメント列を2列目に配置）
 templates:
   md:
-    table: 'db/tbls/table.md.tmpl'
+    table: "db/tbls/table.md.tmpl"
 
 dict:
-  Tables: テーブル一覧
+  Tables: テーブル
   Description: 概要
-  Columns: カラム一覧
-  Indexes: インデック一覧
-  Constraints: 制約一覧
+  Columns: カラム
+  Indexes: インデック
+  Constraints: 制約
   Triggers: トリガー
   Relations: ER図
   Name: 名称
