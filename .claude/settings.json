@@ -3,7 +3,11 @@
     "allow": [
       "Bash(tbls doc:*)",
       "Bash(tbls out:*)",
-      "Bash(npm run erd:*)"
+      "Bash(npm run erd:*)",
+      "Bash(git checkout:*)"
     ]
+  },
+  "enabledPlugins": {
+    "superpowers-developing-for-claude-code@superpowers-marketplace": true
   }
 }

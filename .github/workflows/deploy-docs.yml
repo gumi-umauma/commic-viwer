@@ -1,3 +1,4 @@
+# docs/ または db/tbls/ の変更時に GitHub Pages へドキュメントをデプロイする
 name: Deploy Docs to GitHub Pages
 
 on:
@@ -8,11 +9,13 @@ on:
       - "docs/**"
       - "db/tbls/**"
 
+# GitHub Pages デプロイに必要な権限
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# 同時デプロイを防止（進行中のデプロイは完了まで待つ）
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -24,6 +27,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # schema.json が変わっていなければ DB ドキュメント生成をスキップ
       - name: Cache DB docs
         id: cache-db-docs
         uses: actions/cache@v4
@@ -33,6 +37,7 @@ jobs:
             docs/db/erd
           key: db-docs-${{ hashFiles('db/tbls/schema.json') }}
 
+      # --- キャッシュミス時のみ DB ドキュメントを再生成 ---
       - name: Setup tbls
         if: steps.cache-db-docs.outputs.cache-hit != 'true'
         uses: k1LoW/setup-tbls@v1
@@ -48,14 +53,17 @@ jobs:
         if: steps.cache-db-docs.outputs.cache-hit != 'true'
         run: npm ci
 
+      # schema.json からテーブル定義ドキュメントを生成
       - name: Generate DB docs (tbls)
         if: steps.cache-db-docs.outputs.cache-hit != 'true'
         run: tbls doc --rm-dist --config db/tbls/.tbls.yml json://db/tbls/schema.json
 
+      # ER図を生成
       - name: Generate ERD
         if: steps.cache-db-docs.outputs.cache-hit != 'true'
         run: npm run erd
 
+      # --- docs/ 配下を Jekyll でビルドし Pages にアップロード ---
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
@@ -68,6 +76,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 
+  # build ジョブ完了後に GitHub Pages へデプロイ
   deploy:
     environment:
       name: github-pages

@@ -10,38 +10,42 @@ db/
 │   └── *.sql
 └── tbls/            # tbls関連ファイル
     ├── .tbls.yml    # tbls設定
-    ├── schema.json  # tbls出力（JSON）
+    ├── schema.json  # DBスキーマのJSON表現（CIの入力ソース）
     └── table.md.tmpl # カスタムテンプレート
 ```
 
 ## 設計書の更新方法
 
-スキーマを変更したら、以下の手順で設計書を更新する。
+スキーマを変更したら、以下の手順で `schema.json` を更新する。
+テーブル定義ドキュメントとER図の生成はCIが自動で行う。
 
-### 1. tbls でドキュメント出力
-
-```bash
-source .env.local && tbls doc $TBLS_DSN --config db/tbls/.tbls.yml --force
-```
-
-### 2. tbls でJSON出力（ERD用）
+ローカルDBに接続し、最新のスキーマをJSONとして出力してコミットする。
 
 ```bash
 source .env.local && tbls out -t json -o db/tbls/schema.json $TBLS_DSN
 ```
 
-### 3. Liam ERDで可視化（docs/db/erd/ に出力）
+### ローカルで確認したい場合
+
+CIに頼らず手元で確認したい場合は、以下を実行する。
 
 ```bash
+# テーブル定義ドキュメント生成
+tbls doc --rm-dist --config db/tbls/.tbls.yml json://db/tbls/schema.json
+
+# ER図生成
 npm run erd
 ```
+
+生成物は `docs/db/` 以下に出力される。
 
 ## 関連ファイル
 
 | ファイル | 用途 |
 |---------|------|
 | `db/tbls/.tbls.yml` | tbls設定 |
+| `db/tbls/schema.json` | DBスキーマのJSON表現（CIの入力ソース） |
 | `db/tbls/table.md.tmpl` | カスタムテンプレート（コメント列を2列目に配置） |
-| `docs/db/` | 公開用ドキュメント（GitHub Pages） |
-| `docs/db/tables/` | tblsが生成するテーブル定義 |
-| `docs/db/erd/` | Liam ERDが生成するER図（SPA） |
+| `docs/db/tables/` | tblsが生成するテーブル定義（GitHub Pages） |
+| `docs/db/erd/` | Liam ERDが生成するER図（GitHub Pages） |
+| `.github/workflows/deploy-docs.yml` | ドキュメント生成・デプロイのCIワークフロー |
