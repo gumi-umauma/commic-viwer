@@ -1,0 +1,21 @@
+openapi: "3.0.3"
+info:
+  title: Comic Viewer API
+  description: 漫画管理システムのAPI
+  version: "1.0.0"
+  license:
+    name: ISC
+
+servers:
+  - url: /
+
+security: []
+
+paths:
+  /api/comic/{id}/volume/{number}/page/{pageNumber}:
+    $ref: "./paths/comic-page.yaml"
+
+components:
+  schemas:
+    problem-detail:
+      $ref: "./components/schemas/problem-detail.yaml"

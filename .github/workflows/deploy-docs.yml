@@ -1,4 +1,4 @@
-# docs/ または db/tbls/ の変更時に GitHub Pages へドキュメントをデプロイする
+# docs/ または db/tbls/ または api/ の変更時に GitHub Pages へドキュメントをデプロイする
 name: Deploy Docs to GitHub Pages
 
 on:
@@ -8,6 +8,7 @@ on:
     paths:
       - "docs/**"
       - "db/tbls/**"
+      - "api/**"
 
 # GitHub Pages デプロイに必要な権限
 permissions:
@@ -62,6 +63,10 @@ jobs:
       - name: Generate ERD
         if: steps.cache-db-docs.outputs.cache-hit != 'true'
         run: npm run erd
+
+      # コミット済みの bundled yaml を docs にコピー
+      - name: Copy OpenAPI spec to docs
+        run: cp api/openapi.bundled.yaml docs/spec/api/openapi.yaml
 
       # --- docs/ 配下を Jekyll でビルドし Pages にアップロード ---
       - name: Setup Pages

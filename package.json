@@ -6,12 +6,15 @@
     "doc": "docs"
   },
   "scripts": {
-    "erd": "liam erd build --format tbls --input db/tbls/schema.json --output-dir docs/db/erd"
+    "erd": "liam erd build --format tbls --input db/tbls/schema.json --output-dir docs/db/erd",
+    "api:bundle": "redocly bundle api/openapi.yaml -o api/openapi.bundled.yaml",
+    "api:lint": "redocly lint api/openapi.yaml"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@liam-hq/cli": "^0.7.24"
+    "@liam-hq/cli": "^0.7.24",
+    "@redocly/cli": "^2.18.1"
   }
 }

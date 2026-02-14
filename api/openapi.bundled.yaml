@@ -1,0 +1,139 @@
+openapi: 3.0.3
+info:
+  title: Comic Viewer API
+  description: 漫画管理システムのAPI
+  version: 1.0.0
+  license:
+    name: ISC
+servers:
+  - url: /
+security: []
+paths:
+  /api/comic/{id}/volume/{number}/page/{pageNumber}:
+    get:
+      summary: ページ画像取得
+      description: |
+        指定した漫画・巻・ページ番号に対応する画像ファイルを返す。
+        レスポンスには1年間のキャッシュヘッダが付与される。
+      operationId: getComicPage
+      tags:
+        - comic
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 漫画ID
+          schema:
+            type: string
+        - name: number
+          in: path
+          required: true
+          description: 巻番号（1以上）
+          schema:
+            type: integer
+            minimum: 1
+        - name: pageNumber
+          in: path
+          required: true
+          description: ページ番号（1以上）
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: ページ画像
+          headers:
+            Cache-Control:
+              schema:
+                type: string
+                example: public, max-age=31536000, immutable
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            image/png:
+              schema:
+                type: string
+                format: binary
+            image/webp:
+              schema:
+                type: string
+                format: binary
+            image/svg+xml:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: パラメータが不正
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/problem-detail'
+              example:
+                type: bad-request
+                title: Bad Request
+                status: 400
+                detail: パラメータが不正です
+        '404':
+          description: リソースが見つからない
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/problem-detail'
+              examples:
+                comic-not-found:
+                  summary: 漫画が見つからない
+                  value:
+                    type: not-found
+                    title: Not Found
+                    status: 404
+                    detail: 漫画が見つかりません
+                volume-not-found:
+                  summary: 巻が見つからない
+                  value:
+                    type: not-found
+                    title: Not Found
+                    status: 404
+                    detail: 巻が見つかりません
+                page-not-found:
+                  summary: ページが見つからない
+                  value:
+                    type: not-found
+                    title: Not Found
+                    status: 404
+                    detail: ページが見つかりません
+                image-not-found:
+                  summary: 画像ファイルが見つからない
+                  value:
+                    type: not-found
+                    title: Not Found
+                    status: 404
+                    detail: 画像ファイルが見つかりません
+components:
+  schemas:
+    problem-detail:
+      type: object
+      description: RFC 7807 Problem Details
+      required:
+        - type
+        - title
+        - status
+        - detail
+      properties:
+        type:
+          type: string
+          description: エラー種別
+          example: not-found
+        title:
+          type: string
+          description: エラータイトル
+          example: Not Found
+        status:
+          type: integer
+          description: HTTPステータスコード
+          example: 404
+        detail:
+          type: string
+          description: エラーの詳細メッセージ
+          example: 漫画が見つかりません

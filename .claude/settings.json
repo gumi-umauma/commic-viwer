@@ -6,7 +6,9 @@
       "Bash(npm run erd:*)",
       "Bash(git checkout:*)",
       "Bash(npm run build:*)",
-      "Bash(sqlc generate:*)"
+      "Bash(sqlc generate:*)",
+      "Bash(npm run api:bundle:*)",
+      "Bash(npm run api:lint:*)"
     ]
   },
   "enabledPlugins": {

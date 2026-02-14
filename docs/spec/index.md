@@ -11,7 +11,7 @@ title: 機能仕様
 
 ## API仕様
 
-TODO: OpenAPI形式で作成予定
+- [ページ画像取得API](./api/)
 
 ## 画面仕様
 
