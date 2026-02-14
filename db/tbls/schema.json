@@ -4,16 +4,33 @@
     {
       "name": "public.comic",
       "type": "BASE TABLE",
+      "comment": "漫画作品",
       "columns": [
         {
           "name": "id",
           "type": "text",
-          "nullable": false
+          "nullable": false,
+          "comment": "ID"
         },
         {
           "name": "title",
           "type": "text",
-          "nullable": false
+          "nullable": false,
+          "comment": "タイトル"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "nullable": false,
+          "default": "now()",
+          "comment": "作成日時"
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "nullable": false,
+          "default": "now()",
+          "comment": "更新日時"
         }
       ],
       "indexes": [
@@ -23,6 +40,14 @@
           "table": "public.comic",
           "columns": [
             "id"
+          ]
+        },
+        {
+          "name": "comic_title_key",
+          "def": "CREATE UNIQUE INDEX comic_title_key ON public.comic USING btree (title)",
+          "table": "public.comic",
+          "columns": [
+            "title"
           ]
         }
       ],
@@ -36,8 +61,127 @@
           "columns": [
             "id"
           ]
+        },
+        {
+          "name": "comic_title_key",
+          "type": "UNIQUE",
+          "def": "UNIQUE (title)",
+          "table": "public.comic",
+          "referenced_table": "",
+          "columns": [
+            "title"
+          ]
         }
       ]
+    },
+    {
+      "name": "public.volume",
+      "type": "BASE TABLE",
+      "comment": "巻",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "nullable": false,
+          "comment": "ID"
+        },
+        {
+          "name": "comic_id",
+          "type": "text",
+          "nullable": false,
+          "comment": "漫画ID"
+        },
+        {
+          "name": "volume_number",
+          "type": "integer",
+          "nullable": false,
+          "comment": "巻数"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "nullable": false,
+          "default": "now()",
+          "comment": "作成日時"
+        },
+        {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "nullable": false,
+          "default": "now()",
+          "comment": "更新日時"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "volume_pkey",
+          "def": "CREATE UNIQUE INDEX volume_pkey ON public.volume USING btree (id)",
+          "table": "public.volume",
+          "columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "volume_comic_id_volume_number_key",
+          "def": "CREATE UNIQUE INDEX volume_comic_id_volume_number_key ON public.volume USING btree (comic_id, volume_number)",
+          "table": "public.volume",
+          "columns": [
+            "comic_id",
+            "volume_number"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "volume_comic_id_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (comic_id) REFERENCES comic(id)",
+          "table": "public.volume",
+          "referenced_table": "comic",
+          "columns": [
+            "comic_id"
+          ],
+          "referenced_columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "volume_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (id)",
+          "table": "public.volume",
+          "referenced_table": "",
+          "columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "volume_comic_id_volume_number_key",
+          "type": "UNIQUE",
+          "def": "UNIQUE (comic_id, volume_number)",
+          "table": "public.volume",
+          "referenced_table": "",
+          "columns": [
+            "comic_id",
+            "volume_number"
+          ]
+        }
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "table": "public.volume",
+      "columns": [
+        "comic_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "public.comic",
+      "parent_columns": [
+        "id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (comic_id) REFERENCES comic(id)"
     }
   ],
   "driver": {

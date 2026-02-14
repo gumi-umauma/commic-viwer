@@ -14,26 +14,26 @@
 
     <!-- Mermaid: kramdownが生成する <div class="language-mermaid"> を図に変換 -->
     <script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
 
-  mermaid.initialize({
-    startOnLoad: false,
-    theme: 'default'
-  });
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'default'
+      });
 
-  document.addEventListener('DOMContentLoaded', async () => {
-    const elements = document.querySelectorAll('.language-mermaid');
-    for (const el of elements) {
-      const code = el.innerText.trim();
-      const insertDiv = document.createElement('div');
-      insertDiv.className = 'mermaid';
-      insertDiv.textContent = code;
-      el.replaceWith(insertDiv);
-    }
-    await mermaid.run({
-      nodes: document.querySelectorAll('.mermaid')
-    });
-  });
-</script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        const elements = document.querySelectorAll('.language-mermaid');
+        for (const el of elements) {
+          const code = el.innerText.trim();
+          const insertDiv = document.createElement('div');
+          insertDiv.className = 'mermaid';
+          insertDiv.textContent = code;
+          el.replaceWith(insertDiv);
+        }
+        await mermaid.run({
+          nodes: document.querySelectorAll('.mermaid')
+        });
+      });
+    </script>
   </body>
 </html>

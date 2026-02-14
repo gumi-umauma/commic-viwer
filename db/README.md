@@ -6,12 +6,30 @@
 
 ```
 db/
+├── atlas.hcl        # Atlas設定ファイル
 ├── schema/          # スキーマ定義（DDL）
 │   └── *.sql
 └── tbls/            # tbls関連ファイル
     ├── .tbls.yml    # tbls設定
     ├── schema.json  # DBスキーマのJSON表現（CIの入力ソース）
     └── table.md.tmpl # カスタムテンプレート
+```
+
+## マイグレーション
+
+[Atlas](https://atlasgo.io/) による宣言的マイグレーションを採用している。
+`db/schema/*.sql` がスキーマの宣言であり、Atlasがこれと実DBの差分を自動計算する。
+
+### 差分の確認（dry-run）
+
+```bash
+atlas schema apply -c "file://db/atlas.hcl" --env local --dry-run
+```
+
+### スキーマの適用
+
+```bash
+atlas schema apply -c "file://db/atlas.hcl" --env local
 ```
 
 ## 設計書の更新方法
@@ -22,7 +40,7 @@ db/
 ローカルDBに接続し、最新のスキーマをJSONとして出力してコミットする。
 
 ```bash
-source .env.local && tbls out -t json -o db/tbls/schema.json $TBLS_DSN
+source .env && tbls out -t json -o db/tbls/schema.json $TBLS_DSN
 ```
 
 ### ローカルで確認したい場合
@@ -41,11 +59,12 @@ npm run erd
 
 ## 関連ファイル
 
-| ファイル | 用途 |
-|---------|------|
-| `db/tbls/.tbls.yml` | tbls設定 |
-| `db/tbls/schema.json` | DBスキーマのJSON表現（CIの入力ソース） |
-| `db/tbls/table.md.tmpl` | カスタムテンプレート（コメント列を2列目に配置） |
-| `docs/design/db/tables/` | tblsが生成するテーブル定義（GitHub Pages） |
-| `docs/design/db/erd/` | Liam ERDが生成するER図（GitHub Pages） |
-| `.github/workflows/deploy-docs.yml` | ドキュメント生成・デプロイのCIワークフロー |
+| ファイル                            | 用途                                            |
+| ----------------------------------- | ----------------------------------------------- |
+| `db/atlas.hcl`                      | Atlas設定（宣言的マイグレーション）             |
+| `db/tbls/.tbls.yml`                 | tbls設定                                        |
+| `db/tbls/schema.json`               | DBスキーマのJSON表現（CIの入力ソース）          |
+| `db/tbls/table.md.tmpl`             | カスタムテンプレート（コメント列を2列目に配置） |
+| `docs/design/db/tables/`            | tblsが生成するテーブル定義（GitHub Pages）      |
+| `docs/design/db/erd/`               | Liam ERDが生成するER図（GitHub Pages）          |
+| `.github/workflows/deploy-docs.yml` | ドキュメント生成・デプロイのCIワークフロー      |
