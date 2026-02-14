@@ -7,6 +7,7 @@ import { VolumeNumber } from "@/domain/value-objects/volume-number";
 import {
   findVolumesByComicId,
   findVolumeByComicIdAndNumber,
+  insertVolume,
 } from "@/infrastructure/db/volume_sql";
 
 export class PgVolumeRepository implements VolumeRepository {
@@ -39,5 +40,13 @@ export class PgVolumeRepository implements VolumeRepository {
       ComicId.create(row.comicId),
       VolumeNumber.create(row.volumeNumber)
     );
+  }
+
+  async insert(volume: Volume): Promise<void> {
+    await insertVolume(this.pool, {
+      id: volume.id.value,
+      comicId: volume.comicId.value,
+      volumeNumber: volume.volumeNumber.value,
+    });
   }
 }

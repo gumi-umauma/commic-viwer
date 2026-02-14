@@ -5,5 +5,7 @@ export interface ComicRepository {
   findAll(): Promise<Comic[]>;
   findAllWithVolumes(): Promise<Comic[]>;
   findById(id: ComicId): Promise<Comic | null>;
+  findByTitle(title: string): Promise<Comic | null>;
+  insert(comic: Comic): Promise<void>;
   save(comic: Comic): Promise<void>;
 }

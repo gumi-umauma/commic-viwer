@@ -1,5 +1,5 @@
 dsn: ${TBLS_DSN}
-docPath: docs/db/tables
+docPath: docs/design/db/tables
 
 templates:
   md:

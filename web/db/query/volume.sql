@@ -10,3 +10,7 @@ ORDER BY volume_number;
 SELECT id, comic_id, volume_number
 FROM volume
 WHERE comic_id = $1 AND volume_number = $2;
+
+-- name: InsertVolume :exec
+-- 巻を新規登録
+INSERT INTO volume (id, comic_id, volume_number) VALUES ($1, $2, $3);

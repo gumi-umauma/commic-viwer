@@ -6,7 +6,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "erd": "liam erd build --format tbls --input db/tbls/schema.json --output-dir docs/db/erd",
+    "erd": "liam erd build --format tbls --input db/tbls/schema.json --output-dir docs/design/db/erd",
     "api:bundle": "redocly bundle api/openapi.yaml -o api/openapi.bundled.yaml",
     "api:lint": "redocly lint api/openapi.yaml"
   },

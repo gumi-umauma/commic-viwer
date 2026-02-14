@@ -1,4 +1,4 @@
-import { readdir } from "fs/promises";
+import { mkdir, readdir } from "fs/promises";
 import { existsSync } from "fs";
 import path from "path";
 
@@ -32,6 +32,45 @@ export class PageFileScanner {
     return entries
       .filter(isImageFile)
       .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+  }
+
+  async createComicDirectory(comicTitle: string): Promise<void> {
+    const absoluteDir = path.resolve(this.mangaDataDir, comicTitle);
+
+    if (!absoluteDir.startsWith(path.resolve(this.mangaDataDir))) {
+      throw new Error("Invalid directory path");
+    }
+
+    await mkdir(absoluteDir, { recursive: true });
+  }
+
+  async listComicDirectories(): Promise<string[]> {
+    const absoluteDir = path.resolve(this.mangaDataDir);
+    const entries = await readdir(absoluteDir, { withFileTypes: true });
+    return entries
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name)
+      .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+  }
+
+  async scanVolumeDirectories(comicTitle: string): Promise<number[]> {
+    const absoluteDir = path.resolve(this.mangaDataDir, comicTitle);
+
+    if (!absoluteDir.startsWith(path.resolve(this.mangaDataDir))) {
+      throw new Error("Invalid directory path");
+    }
+
+    if (!existsSync(absoluteDir)) {
+      return [];
+    }
+
+    const entries = await readdir(absoluteDir, { withFileTypes: true });
+    const volumePattern = /^\d{3}$/;
+
+    return entries
+      .filter((entry) => entry.isDirectory() && volumePattern.test(entry.name))
+      .map((entry) => parseInt(entry.name, 10))
+      .sort((a, b) => a - b);
   }
 
   getAbsolutePath(directoryPath: string, filename: string): string {

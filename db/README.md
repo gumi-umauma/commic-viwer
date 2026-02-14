@@ -37,7 +37,7 @@ tbls doc --rm-dist --config db/tbls/.tbls.yml json://db/tbls/schema.json
 npm run erd
 ```
 
-生成物は `docs/db/` 以下に出力される。
+生成物は `docs/design/db/` 以下に出力される。
 
 ## 関連ファイル
 
@@ -46,6 +46,6 @@ npm run erd
 | `db/tbls/.tbls.yml` | tbls設定 |
 | `db/tbls/schema.json` | DBスキーマのJSON表現（CIの入力ソース） |
 | `db/tbls/table.md.tmpl` | カスタムテンプレート（コメント列を2列目に配置） |
-| `docs/db/tables/` | tblsが生成するテーブル定義（GitHub Pages） |
-| `docs/db/erd/` | Liam ERDが生成するER図（GitHub Pages） |
+| `docs/design/db/tables/` | tblsが生成するテーブル定義（GitHub Pages） |
+| `docs/design/db/erd/` | Liam ERDが生成するER図（GitHub Pages） |
 | `.github/workflows/deploy-docs.yml` | ドキュメント生成・デプロイのCIワークフロー |

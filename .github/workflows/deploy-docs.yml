@@ -34,8 +34,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            docs/db/tables
-            docs/db/erd
+            docs/design/db/tables
+            docs/design/db/erd
           key: db-docs-${{ hashFiles('db/tbls/schema.json') }}
 
       # --- キャッシュミス時のみ DB ドキュメントを再生成 ---
@@ -66,7 +66,7 @@ jobs:
 
       # コミット済みの bundled yaml を docs にコピー
       - name: Copy OpenAPI spec to docs
-        run: cp api/openapi.bundled.yaml docs/spec/api/openapi.yaml
+        run: cp api/openapi.bundled.yaml docs/design/api/openapi.yaml
 
       # --- docs/ 配下を Jekyll でビルドし Pages にアップロード ---
       - name: Setup Pages

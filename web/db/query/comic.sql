@@ -14,3 +14,11 @@ SELECT id, title FROM comic WHERE id = $1;
 -- name: UpdateComicTitle :exec
 -- 漫画タイトルを更新
 UPDATE comic SET title = $2, updated_at = NOW() WHERE id = $1;
+
+-- name: InsertComic :exec
+-- 漫画を新規登録
+INSERT INTO comic (id, title) VALUES ($1, $2);
+
+-- name: FindComicByTitle :one
+-- タイトルで漫画を検索
+SELECT id, title FROM comic WHERE title = $1;

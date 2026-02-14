@@ -7,11 +7,10 @@
 
 ## 技術スタック
 
-- **Framework**: Next.js (App Router)
-- **Database**: PostgreSQL
-- **DB Access**: sqlc
+[web/README.md](web/README.md) を参照
 
-## 重要ルール
+## ドキュメント
 
 - docsの内容がSingle Source of Truthである
 - 機能や設計に変更を加える場合は必ずdocs以下の内容を更新すること
+- specフォルダの内容は非エンジニアも読む仕様書であることに注意

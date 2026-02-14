@@ -93,3 +93,47 @@ export async function updateComicTitle(client: Client, args: UpdateComicTitleArg
     });
 }
 
+export const insertComicQuery = `-- name: InsertComic :exec
+INSERT INTO comic (id, title) VALUES ($1, $2)`;
+
+export interface InsertComicArgs {
+    id: string;
+    title: string;
+}
+
+export async function insertComic(client: Client, args: InsertComicArgs): Promise<void> {
+    await client.query({
+        text: insertComicQuery,
+        values: [args.id, args.title],
+        rowMode: "array"
+    });
+}
+
+export const findComicByTitleQuery = `-- name: FindComicByTitle :one
+SELECT id, title FROM comic WHERE title = $1`;
+
+export interface FindComicByTitleArgs {
+    title: string;
+}
+
+export interface FindComicByTitleRow {
+    id: string;
+    title: string;
+}
+
+export async function findComicByTitle(client: Client, args: FindComicByTitleArgs): Promise<FindComicByTitleRow | null> {
+    const result = await client.query({
+        text: findComicByTitleQuery,
+        values: [args.title],
+        rowMode: "array"
+    });
+    if (result.rows.length !== 1) {
+        return null;
+    }
+    const row = result.rows[0];
+    return {
+        id: row[0],
+        title: row[1]
+    };
+}
+

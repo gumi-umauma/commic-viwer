@@ -68,3 +68,20 @@ export async function findVolumeByComicIdAndNumber(client: Client, args: FindVol
     };
 }
 
+export const insertVolumeQuery = `-- name: InsertVolume :exec
+INSERT INTO volume (id, comic_id, volume_number) VALUES ($1, $2, $3)`;
+
+export interface InsertVolumeArgs {
+    id: string;
+    comicId: string;
+    volumeNumber: number;
+}
+
+export async function insertVolume(client: Client, args: InsertVolumeArgs): Promise<void> {
+    await client.query({
+        text: insertVolumeQuery,
+        values: [args.id, args.comicId, args.volumeNumber],
+        rowMode: "array"
+    });
+}
+
