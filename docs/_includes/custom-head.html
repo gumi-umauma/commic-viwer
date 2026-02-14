@@ -1,0 +1,16 @@
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+  mermaid.initialize({ startOnLoad: false });
+
+  // Jekyllが生成する <pre><code> を mermaid用の <div> に変換
+  document.querySelectorAll('pre code.language-mermaid').forEach((codeEl) => {
+    const pre = codeEl.parentElement;
+    const div = document.createElement('div');
+    div.className = 'mermaid';
+    div.textContent = codeEl.textContent;
+    pre.replaceWith(div);
+  });
+
+  await mermaid.run();
+</script>
