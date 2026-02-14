@@ -1,4 +1,4 @@
-import { mkdir, readdir } from "fs/promises";
+import { mkdir, readdir, rename } from "fs/promises";
 import { existsSync } from "fs";
 import path from "path";
 
@@ -32,6 +32,25 @@ export class PageFileScanner {
     return entries
       .filter(isImageFile)
       .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+  }
+
+  async renameComicDirectory(
+    oldTitle: string,
+    newTitle: string
+  ): Promise<void> {
+    const oldDir = path.resolve(this.mangaDataDir, oldTitle);
+    const newDir = path.resolve(this.mangaDataDir, newTitle);
+    const baseDir = path.resolve(this.mangaDataDir);
+
+    if (!oldDir.startsWith(baseDir) || !newDir.startsWith(baseDir)) {
+      throw new Error("Invalid directory path");
+    }
+
+    if (!existsSync(oldDir)) {
+      return;
+    }
+
+    await rename(oldDir, newDir);
   }
 
   async createComicDirectory(comicTitle: string): Promise<void> {

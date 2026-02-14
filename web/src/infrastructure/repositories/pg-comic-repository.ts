@@ -2,7 +2,7 @@ import { Pool } from "pg";
 import { Comic } from "@/domain/entities/comic";
 import { ComicRepository } from "@/domain/repositories/comic-repository";
 import { ComicId } from "@/domain/value-objects/comic-id";
-import { findAllComics, findAllComicsWithVolumes, findComicById, findComicByTitle, insertComic, updateComicTitle } from "@/infrastructure/db/comic_sql";
+import { findAllComics, findAllComicsWithVolumes, findComicById, findComicByTitle, insertComic, updateComicTitle, deleteComic } from "@/infrastructure/db/comic_sql";
 
 export class PgComicRepository implements ComicRepository {
   constructor(private readonly pool: Pool) {}
@@ -45,5 +45,9 @@ export class PgComicRepository implements ComicRepository {
       id: comic.id.value,
       title: comic.title,
     });
+  }
+
+  async delete(id: ComicId): Promise<void> {
+    await deleteComic(this.pool, { id: id.value });
   }
 }

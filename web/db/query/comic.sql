@@ -22,3 +22,7 @@ INSERT INTO comic (id, title) VALUES ($1, $2);
 -- name: FindComicByTitle :one
 -- タイトルで漫画を検索
 SELECT id, title FROM comic WHERE title = $1;
+
+-- name: DeleteComic :exec
+-- 漫画を削除（volumeはCASCADEで自動削除）
+DELETE FROM comic WHERE id = $1;

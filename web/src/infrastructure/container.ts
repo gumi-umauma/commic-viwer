@@ -7,6 +7,7 @@ import { GetVolumeViewerUseCase } from "@/application/usecases/get-volume-viewer
 import { UpdateComicTitleUseCase } from "@/application/usecases/update-comic-title";
 import { RegisterComicUseCase } from "@/application/usecases/register-comic";
 import { RegisterComicFromExistingFolderUseCase } from "@/application/usecases/register-comic-from-existing-folder";
+import { DeleteComicUseCase } from "@/application/usecases/delete-comic";
 import { PgComicRepository } from "@/infrastructure/repositories/pg-comic-repository";
 import { PgVolumeRepository } from "@/infrastructure/repositories/pg-volume-repository";
 import { PageFileScanner } from "@/infrastructure/filesystem/page-file-scanner";
@@ -32,6 +33,7 @@ export interface Cradle {
   updateComicTitleUseCase: UpdateComicTitleUseCase;
   registerComicUseCase: RegisterComicUseCase;
   registerComicFromExistingFolderUseCase: RegisterComicFromExistingFolderUseCase;
+  deleteComicUseCase: DeleteComicUseCase;
 }
 
 const container = createContainer<Cradle>();
@@ -45,7 +47,7 @@ container.register({
     (cradle: Cradle) => new PgVolumeRepository(cradle.pool)
   ).singleton(),
   pageFileScanner: asFunction(
-    () => new PageFileScanner(getRequiredEnv("MANGA_DATA_DIR"))
+    () => new PageFileScanner(getRequiredEnv("COMIC_DATA_DIR"))
   ).singleton(),
   getComicsUseCase: asFunction(
     (cradle: Cradle) => new GetComicsUseCase(cradle.comicRepository)
@@ -66,7 +68,8 @@ container.register({
       )
   ).scoped(),
   updateComicTitleUseCase: asFunction(
-    (cradle: Cradle) => new UpdateComicTitleUseCase(cradle.comicRepository)
+    (cradle: Cradle) =>
+      new UpdateComicTitleUseCase(cradle.comicRepository, cradle.pageFileScanner)
   ).scoped(),
   registerComicUseCase: asFunction(
     (cradle: Cradle) =>
@@ -79,6 +82,9 @@ container.register({
         cradle.volumeRepository,
         cradle.pageFileScanner
       )
+  ).scoped(),
+  deleteComicUseCase: asFunction(
+    (cradle: Cradle) => new DeleteComicUseCase(cradle.comicRepository)
   ).scoped(),
 });
 

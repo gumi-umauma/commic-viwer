@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { container } from "@/infrastructure/container";
 import { GetComicDetailUseCase } from "@/application/usecases/get-comic-detail";
 import { ComicTitleEditor } from "./comic-title-editor";
+import { DeleteComicButton } from "./delete-comic-button";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -40,6 +41,9 @@ export default async function AdminComicDetailPage({ params }: Props) {
       ) : (
         <p className="text-gray-500">巻が登録されていません</p>
       )}
+      <div className="mt-8 pt-4 border-t">
+        <DeleteComicButton comicId={comic.id} />
+      </div>
     </main>
   );
 }

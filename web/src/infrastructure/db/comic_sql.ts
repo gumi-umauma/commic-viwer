@@ -137,3 +137,18 @@ export async function findComicByTitle(client: Client, args: FindComicByTitleArg
     };
 }
 
+export const deleteComicQuery = `-- name: DeleteComic :exec
+DELETE FROM comic WHERE id = $1`;
+
+export interface DeleteComicArgs {
+    id: string;
+}
+
+export async function deleteComic(client: Client, args: DeleteComicArgs): Promise<void> {
+    await client.query({
+        text: deleteComicQuery,
+        values: [args.id],
+        rowMode: "array"
+    });
+}
+
