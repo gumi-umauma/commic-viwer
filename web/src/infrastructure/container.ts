@@ -4,6 +4,7 @@ import { GetComicsUseCase } from "@/application/usecases/get-comics";
 import { GetAdminComicsUseCase } from "@/application/usecases/get-admin-comics";
 import { GetComicDetailUseCase } from "@/application/usecases/get-comic-detail";
 import { GetVolumeViewerUseCase } from "@/application/usecases/get-volume-viewer";
+import { UpdateComicTitleUseCase } from "@/application/usecases/update-comic-title";
 import { PgComicRepository } from "@/infrastructure/repositories/pg-comic-repository";
 import { PgVolumeRepository } from "@/infrastructure/repositories/pg-volume-repository";
 import { PageFileScanner } from "@/infrastructure/filesystem/page-file-scanner";
@@ -26,6 +27,7 @@ export interface Cradle {
   getAdminComicsUseCase: GetAdminComicsUseCase;
   getComicDetailUseCase: GetComicDetailUseCase;
   getVolumeViewerUseCase: GetVolumeViewerUseCase;
+  updateComicTitleUseCase: UpdateComicTitleUseCase;
 }
 
 const container = createContainer<Cradle>();
@@ -58,6 +60,9 @@ container.register({
         cradle.volumeRepository,
         cradle.pageFileScanner
       )
+  ).scoped(),
+  updateComicTitleUseCase: asFunction(
+    (cradle: Cradle) => new UpdateComicTitleUseCase(cradle.comicRepository)
   ).scoped(),
 });
 

@@ -28,6 +28,13 @@ export class Comic {
     return this._title;
   }
 
+  changeTitle(newTitle: string): void {
+    if (!newTitle || newTitle.trim() === "") {
+      throw new Error("Title cannot be empty");
+    }
+    this._title = newTitle;
+  }
+
   equals(other: Comic): boolean {
     return this._id.equals(other._id);
   }

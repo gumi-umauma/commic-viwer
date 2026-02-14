@@ -2,7 +2,7 @@ import { Pool } from "pg";
 import { Comic } from "@/domain/entities/comic";
 import { ComicRepository } from "@/domain/repositories/comic-repository";
 import { ComicId } from "@/domain/value-objects/comic-id";
-import { findAllComics, findAllComicsWithVolumes, findComicById } from "@/infrastructure/db/comic_sql";
+import { findAllComics, findAllComicsWithVolumes, findComicById, updateComicTitle } from "@/infrastructure/db/comic_sql";
 
 export class PgComicRepository implements ComicRepository {
   constructor(private readonly pool: Pool) {}
@@ -25,5 +25,12 @@ export class PgComicRepository implements ComicRepository {
     const row = await findComicById(this.pool, { id: id.value });
     if (!row) return null;
     return Comic.reconstruct(ComicId.create(row.id), row.title);
+  }
+
+  async save(comic: Comic): Promise<void> {
+    await updateComicTitle(this.pool, {
+      id: comic.id.value,
+      title: comic.title,
+    });
   }
 }

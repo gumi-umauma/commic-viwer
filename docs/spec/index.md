@@ -28,3 +28,4 @@ title: 機能仕様
 | 画面名       | 仕様書                                       |
 | ------------ | -------------------------------------------- |
 | 漫画管理一覧 | [comics-list.md](./admin/comics-list.md)     |
+| 漫画管理詳細 | [comic-detail.md](./admin/comic-detail.md)   |

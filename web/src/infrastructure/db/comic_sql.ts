@@ -77,3 +77,19 @@ export async function findComicById(client: Client, args: FindComicByIdArgs): Pr
     };
 }
 
+export const updateComicTitleQuery = `-- name: UpdateComicTitle :exec
+UPDATE comic SET title = $2, updated_at = NOW() WHERE id = $1`;
+
+export interface UpdateComicTitleArgs {
+    id: string;
+    title: string;
+}
+
+export async function updateComicTitle(client: Client, args: UpdateComicTitleArgs): Promise<void> {
+    await client.query({
+        text: updateComicTitleQuery,
+        values: [args.id, args.title],
+        rowMode: "array"
+    });
+}
+

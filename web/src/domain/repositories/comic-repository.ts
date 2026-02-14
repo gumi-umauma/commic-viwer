@@ -5,4 +5,5 @@ export interface ComicRepository {
   findAll(): Promise<Comic[]>;
   findAllWithVolumes(): Promise<Comic[]>;
   findById(id: ComicId): Promise<Comic | null>;
+  save(comic: Comic): Promise<void>;
 }
