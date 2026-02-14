@@ -2,7 +2,6 @@ import { Comic } from "@/domain/entities/comic";
 import { ComicRepository } from "@/domain/repositories/comic-repository";
 import { ComicId } from "@/domain/value-objects/comic-id";
 import { PageFileScanner } from "@/infrastructure/filesystem/page-file-scanner";
-import { randomUUID } from "crypto";
 
 export interface RegisterComicResult {
   id: string;
@@ -25,7 +24,7 @@ export class RegisterComicUseCase {
       throw new Error("同じタイトルの漫画が既に存在します");
     }
 
-    const id = ComicId.create(randomUUID());
+    const id = ComicId.generate();
     const comic = Comic.create(id, trimmedTitle);
 
     await this.comicRepository.insert(comic);

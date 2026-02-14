@@ -1,7 +1,7 @@
 -- 巻テーブル
 CREATE TABLE volume (
     id TEXT PRIMARY KEY,
-    comic_id TEXT NOT NULL REFERENCES comic(id),
+    comic_id TEXT NOT NULL REFERENCES comic(id) ON DELETE CASCADE,
     volume_number INTEGER NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),

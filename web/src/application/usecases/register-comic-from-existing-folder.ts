@@ -6,7 +6,6 @@ import { ComicId } from "@/domain/value-objects/comic-id";
 import { VolumeId } from "@/domain/value-objects/volume-id";
 import { VolumeNumber } from "@/domain/value-objects/volume-number";
 import { PageFileScanner } from "@/infrastructure/filesystem/page-file-scanner";
-import { randomUUID } from "crypto";
 
 export interface RegisterComicFromExistingFolderResult {
   id: string;
@@ -36,12 +35,12 @@ export class RegisterComicFromExistingFolderUseCase {
     const volumeNumbers =
       await this.pageFileScanner.scanVolumeDirectories(title);
 
-    const comicId = ComicId.create(randomUUID());
+    const comicId = ComicId.generate();
     const comic = Comic.create(comicId, title);
     await this.comicRepository.insert(comic);
 
     for (const num of volumeNumbers) {
-      const volumeId = VolumeId.create(randomUUID());
+      const volumeId = VolumeId.generate();
       const volumeNumber = VolumeNumber.create(num);
       const volume = Volume.create(volumeId, comicId, volumeNumber);
       await this.volumeRepository.insert(volume);
