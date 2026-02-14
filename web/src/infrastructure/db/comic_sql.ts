@@ -5,8 +5,7 @@ interface Client {
 }
 
 export const findAllComicsQuery = `-- name: FindAllComics :many
-SELECT c.id, c.title FROM comic c
-WHERE EXISTS (SELECT 1 FROM volume v WHERE v.comic_id = c.id)`;
+SELECT id, title FROM comic`;
 
 export interface FindAllComicsRow {
     id: string;
@@ -16,6 +15,29 @@ export interface FindAllComicsRow {
 export async function findAllComics(client: Client): Promise<FindAllComicsRow[]> {
     const result = await client.query({
         text: findAllComicsQuery,
+        values: [],
+        rowMode: "array"
+    });
+    return result.rows.map(row => {
+        return {
+            id: row[0],
+            title: row[1]
+        };
+    });
+}
+
+export const findAllComicsWithVolumesQuery = `-- name: FindAllComicsWithVolumes :many
+SELECT c.id, c.title FROM comic c
+WHERE EXISTS (SELECT 1 FROM volume v WHERE v.comic_id = c.id)`;
+
+export interface FindAllComicsWithVolumesRow {
+    id: string;
+    title: string;
+}
+
+export async function findAllComicsWithVolumes(client: Client): Promise<FindAllComicsWithVolumesRow[]> {
+    const result = await client.query({
+        text: findAllComicsWithVolumesQuery,
         values: [],
         rowMode: "array"
     });

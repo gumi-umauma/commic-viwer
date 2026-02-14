@@ -1,6 +1,7 @@
 import { createContainer, asFunction, asValue } from "awilix";
 import { Pool } from "pg";
 import { GetComicsUseCase } from "@/application/usecases/get-comics";
+import { GetAdminComicsUseCase } from "@/application/usecases/get-admin-comics";
 import { GetComicDetailUseCase } from "@/application/usecases/get-comic-detail";
 import { GetVolumeViewerUseCase } from "@/application/usecases/get-volume-viewer";
 import { PgComicRepository } from "@/infrastructure/repositories/pg-comic-repository";
@@ -22,6 +23,7 @@ export interface Cradle {
   volumeRepository: PgVolumeRepository;
   pageFileScanner: PageFileScanner;
   getComicsUseCase: GetComicsUseCase;
+  getAdminComicsUseCase: GetAdminComicsUseCase;
   getComicDetailUseCase: GetComicDetailUseCase;
   getVolumeViewerUseCase: GetVolumeViewerUseCase;
 }
@@ -41,6 +43,9 @@ container.register({
   ).singleton(),
   getComicsUseCase: asFunction(
     (cradle: Cradle) => new GetComicsUseCase(cradle.comicRepository)
+  ).scoped(),
+  getAdminComicsUseCase: asFunction(
+    (cradle: Cradle) => new GetAdminComicsUseCase(cradle.comicRepository)
   ).scoped(),
   getComicDetailUseCase: asFunction(
     (cradle: Cradle) =>
