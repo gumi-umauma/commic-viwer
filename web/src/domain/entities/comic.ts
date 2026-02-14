@@ -1,5 +1,7 @@
 import { ComicId } from "@/domain/value-objects/comic-id";
 
+const FORBIDDEN_CHARS = /[\\/:*?"<>|]/;
+
 export class Comic {
   private readonly _id: ComicId;
   private _title: string;
@@ -9,10 +11,19 @@ export class Comic {
     this._title = title;
   }
 
-  static create(id: ComicId, title: string): Comic {
+  private static validateTitle(title: string): void {
     if (!title || title.trim() === "") {
       throw new Error("Title cannot be empty");
     }
+    if (FORBIDDEN_CHARS.test(title)) {
+      throw new Error(
+        'タイトルに使用できない文字が含まれています: \\ / : * ? " < > |'
+      );
+    }
+  }
+
+  static create(id: ComicId, title: string): Comic {
+    Comic.validateTitle(title);
     return new Comic(id, title);
   }
 
@@ -29,9 +40,7 @@ export class Comic {
   }
 
   changeTitle(newTitle: string): void {
-    if (!newTitle || newTitle.trim() === "") {
-      throw new Error("Title cannot be empty");
-    }
+    Comic.validateTitle(newTitle);
     this._title = newTitle;
   }
 
