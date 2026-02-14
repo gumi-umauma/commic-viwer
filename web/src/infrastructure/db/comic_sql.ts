@@ -5,7 +5,8 @@ interface Client {
 }
 
 export const findAllComicsQuery = `-- name: FindAllComics :many
-SELECT id, title FROM comic`;
+SELECT c.id, c.title FROM comic c
+WHERE EXISTS (SELECT 1 FROM volume v WHERE v.comic_id = c.id)`;
 
 export interface FindAllComicsRow {
     id: string;
@@ -24,5 +25,33 @@ export async function findAllComics(client: Client): Promise<FindAllComicsRow[]>
             title: row[1]
         };
     });
+}
+
+export const findComicByIdQuery = `-- name: FindComicById :one
+SELECT id, title FROM comic WHERE id = $1`;
+
+export interface FindComicByIdArgs {
+    id: string;
+}
+
+export interface FindComicByIdRow {
+    id: string;
+    title: string;
+}
+
+export async function findComicById(client: Client, args: FindComicByIdArgs): Promise<FindComicByIdRow | null> {
+    const result = await client.query({
+        text: findComicByIdQuery,
+        values: [args.id],
+        rowMode: "array"
+    });
+    if (result.rows.length !== 1) {
+        return null;
+    }
+    const row = result.rows[0];
+    return {
+        id: row[0],
+        title: row[1]
+    };
 }
 

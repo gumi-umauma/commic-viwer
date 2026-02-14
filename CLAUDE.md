@@ -10,3 +10,8 @@
 - **Framework**: Next.js (App Router)
 - **Database**: PostgreSQL
 - **DB Access**: sqlc
+
+## 重要ルール
+
+- docsの内容がSingle Source of Truthである
+- 機能や設計に変更を加える場合は必ずdocs以下の内容を更新すること

@@ -4,7 +4,9 @@
       "Bash(tbls doc:*)",
       "Bash(tbls out:*)",
       "Bash(npm run erd:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(npm run build:*)",
+      "Bash(sqlc generate:*)"
     ]
   },
   "enabledPlugins": {
