@@ -27,14 +27,6 @@ export default async function AdminComicDetailPage({ params }: Props) {
         </Link>
       </nav>
       <ComicTitleEditor comicId={comic.id} initialTitle={comic.title} />
-      <div className="mb-4">
-        <Link
-          href={`/admin/comic/${comic.id}/volume/register`}
-          className="px-4 py-2 text-[14px] bg-primary text-on-primary rounded hover:bg-primary-hover transition-colors inline-block"
-        >
-          巻を追加
-        </Link>
-      </div>
       {comic.volumes.length > 0 ? (
         <ul className="space-y-2">
           {comic.volumes.map((volume) => (

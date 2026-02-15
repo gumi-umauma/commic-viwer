@@ -10,12 +10,18 @@ export default async function AdminComicsPage() {
   return (
     <main className="min-h-screen p-8">
       <h1 className="text-[22px] font-semibold text-heading mb-4">漫画管理</h1>
-      <div className="mb-4">
+      <div className="mb-4 flex gap-2">
         <Link
           href="/admin/comic/register"
           className="inline-block px-4 py-2 text-[14px] bg-primary text-on-primary rounded hover:bg-primary-hover transition-colors"
         >
-          新規登録
+          漫画を追加
+        </Link>
+        <Link
+          href="/admin/volume/register"
+          className="inline-block px-4 py-2 text-[14px] bg-primary text-on-primary rounded hover:bg-primary-hover transition-colors"
+        >
+          巻を追加
         </Link>
       </div>
       <ul className="space-y-2">
