@@ -21,6 +21,7 @@ export function ImageGrid({ pages, comicId, volumeNumber }: Props) {
   const [mode, setMode] = useState<"view" | "delete">("view");
   const [selectedPages, setSelectedPages] = useState<Set<number>>(new Set());
   const [isPending, startTransition] = useTransition();
+  const [cacheBuster, setCacheBuster] = useState(0);
 
   const handlePrev = useCallback(() => {
     setSelectedIndex((prev) =>
@@ -80,6 +81,7 @@ export function ImageGrid({ pages, comicId, volumeNumber }: Props) {
       if (result.success) {
         setMode("view");
         setSelectedPages(new Set());
+        setCacheBuster((prev) => prev + 1);
         router.refresh();
       } else {
         alert(result.error ?? "削除に失敗しました");
@@ -140,7 +142,7 @@ export function ImageGrid({ pages, comicId, volumeNumber }: Props) {
               }`}
             >
               <img
-                src={page.imageUrl}
+                src={`${page.imageUrl}${cacheBuster ? `?v=${cacheBuster}` : ""}`}
                 alt={`ページ ${page.pageNumber}`}
                 loading="lazy"
                 className="w-full h-full object-cover"
@@ -209,7 +211,7 @@ export function ImageGrid({ pages, comicId, volumeNumber }: Props) {
               </button>
 
               <img
-                src={pages[selectedIndex].imageUrl}
+                src={`${pages[selectedIndex].imageUrl}${cacheBuster ? `?v=${cacheBuster}` : ""}`}
                 alt={`ページ ${pages[selectedIndex].pageNumber}`}
                 className="max-h-[80vh] max-w-[70vw] object-contain"
               />

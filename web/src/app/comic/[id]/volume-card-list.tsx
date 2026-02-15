@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { useCallback, useRef, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback, useState, useTransition } from "react";
 import { toggleReadStatus } from "./actions";
 
 type Volume = {
@@ -15,9 +15,9 @@ type Props = {
   volumes: Volume[];
 };
 
-const LONG_PRESS_MS = 500;
-
 export function VolumeCardList({ comicId, volumes }: Props) {
+  const router = useRouter();
+  const [editMode, setEditMode] = useState(false);
   const [readState, setReadState] = useState<Record<string, boolean>>(() => {
     const map: Record<string, boolean> = {};
     for (const v of volumes) {
@@ -26,72 +26,76 @@ export function VolumeCardList({ comicId, volumes }: Props) {
     return map;
   });
   const [isPending, startTransition] = useTransition();
-  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const isLongPress = useRef(false);
 
-  const handlePressStart = useCallback(
+  const handleToggle = useCallback(
     (volumeId: string) => {
-      isLongPress.current = false;
-      longPressTimer.current = setTimeout(() => {
-        isLongPress.current = true;
-        startTransition(async () => {
-          const result = await toggleReadStatus(comicId, volumeId);
-          if (result.success) {
-            setReadState((prev) => ({ ...prev, [volumeId]: result.isRead }));
-          }
-        });
-      }, LONG_PRESS_MS);
+      startTransition(async () => {
+        const result = await toggleReadStatus(comicId, volumeId);
+        if (result.success) {
+          setReadState((prev) => ({ ...prev, [volumeId]: result.isRead }));
+        }
+      });
     },
     [comicId]
   );
 
-  const handlePressEnd = useCallback(() => {
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-      longPressTimer.current = null;
-    }
-  }, []);
-
-  const handleClick = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>) => {
-      if (isLongPress.current) {
-        e.preventDefault();
+  const handleCardClick = useCallback(
+    (volume: Volume) => {
+      if (editMode) {
+        handleToggle(volume.id);
+      } else {
+        router.push(`/comic/${comicId}/volume/${volume.volumeNumber}`);
       }
     },
-    []
+    [editMode, comicId, router, handleToggle]
   );
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-      {volumes.map((volume) => (
-        <Link
-          key={volume.id}
-          href={`/comic/${comicId}/volume/${volume.volumeNumber}`}
-          className="bg-surface border border-outline rounded overflow-hidden hover:bg-surface-hover transition-colors relative select-none"
-          onPointerDown={() => handlePressStart(volume.id)}
-          onPointerUp={handlePressEnd}
-          onPointerLeave={handlePressEnd}
-          onContextMenu={(e) => e.preventDefault()}
-          onClick={handleClick}
+    <>
+      <div className="mb-4">
+        <button
+          type="button"
+          onClick={() => setEditMode((prev) => !prev)}
+          className={`px-3 py-1.5 text-sm rounded border transition-colors ${
+            editMode
+              ? "bg-primary text-on-primary border-primary"
+              : "bg-surface text-body border-outline hover:bg-surface-hover"
+          }`}
         >
-          <div className="relative">
-            <img
-              src={`/api/comic/${comicId}/volume/${volume.volumeNumber}/page/1`}
-              alt={`第${volume.volumeNumber}巻`}
-              className="w-full aspect-[2/3] object-cover bg-placeholder"
-              draggable={false}
-            />
-            {readState[volume.id] && (
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                <span className="text-white text-lg font-bold">既読</span>
-              </div>
-            )}
-          </div>
-          <p className="p-2 text-body text-sm font-medium">
-            第{volume.volumeNumber}巻
-          </p>
-        </Link>
-      ))}
-    </div>
+          {editMode ? "既読管理を終了" : "既読管理"}
+        </button>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        {volumes.map((volume) => {
+          const isRead = readState[volume.id];
+          return (
+            <div
+              key={volume.id}
+              role="button"
+              className={`rounded overflow-hidden transition-colors select-none cursor-pointer ${
+                isRead
+                  ? "bg-gray-400 border border-gray-400"
+                  : "bg-surface border border-outline hover:bg-surface-hover"
+              } ${editMode ? "ring-2 ring-primary/30" : ""}`}
+              onClick={() => handleCardClick(volume)}
+            >
+              <img
+                src={`/api/comic/${comicId}/volume/${volume.volumeNumber}/page/1`}
+                alt={`第${volume.volumeNumber}巻`}
+                className="w-full aspect-[2/3] object-cover pointer-events-none bg-placeholder"
+                draggable={false}
+              />
+              <p
+                className={`p-2 text-sm font-medium ${
+                  isRead ? "bg-gray-300 text-gray-500" : "text-body"
+                }`}
+              >
+                第{volume.volumeNumber}巻
+              </p>
+            </div>
+          );
+        })}
+      </div>
+    </>
   );
 }
