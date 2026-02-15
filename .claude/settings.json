@@ -9,7 +9,8 @@
       "Bash(sqlc generate:*)",
       "Bash(npm run api:bundle:*)",
       "Bash(npm run api:lint:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(npx next build)"
     ]
   },
   "enabledPlugins": {

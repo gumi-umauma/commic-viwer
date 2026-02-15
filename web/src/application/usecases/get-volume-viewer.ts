@@ -14,6 +14,7 @@ export type VolumeViewerDto = {
   comicTitle: string;
   volumeNumber: number;
   pages: ViewerPageDto[];
+  nextVolumeNumber: number | null;
 };
 
 export class GetVolumeViewerUseCase {
@@ -45,6 +46,16 @@ export class GetVolumeViewerUseCase {
     );
     const filenames = await this.pageFileScanner.scanPages(directoryPath);
 
+    const allVolumes = await this.volumeRepository.findByComicId(cid);
+    const sortedNumbers = allVolumes
+      .map((v) => v.volumeNumber.value)
+      .sort((a, b) => a - b);
+    const currentIndex = sortedNumbers.indexOf(volume.volumeNumber.value);
+    const nextVolumeNumber =
+      currentIndex < sortedNumbers.length - 1
+        ? sortedNumbers[currentIndex + 1]
+        : null;
+
     return {
       comicId: comic.id.value,
       comicTitle: comic.title,
@@ -53,6 +64,7 @@ export class GetVolumeViewerUseCase {
         pageNumber: index + 1,
         imageUrl: `/api/comic/${comic.id.value}/volume/${volume.volumeNumber.value}/page/${index + 1}`,
       })),
+      nextVolumeNumber,
     };
   }
 }

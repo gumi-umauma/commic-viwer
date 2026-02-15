@@ -9,4 +9,8 @@ export interface VolumeRepository {
     number: VolumeNumber
   ): Promise<Volume | null>;
   insert(volume: Volume): Promise<void>;
+  deleteByComicIdAndNumber(
+    comicId: ComicId,
+    number: VolumeNumber
+  ): Promise<void>;
 }

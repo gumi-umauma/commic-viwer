@@ -67,6 +67,8 @@ export class RegisterVolumeUseCase {
       );
     }
 
+    await this.pageFileScanner.moveSourceToRegistered(input.sourceFolderName);
+
     return { id: volumeId.value };
   }
 }

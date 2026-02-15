@@ -14,3 +14,7 @@ WHERE comic_id = $1 AND volume_number = $2;
 -- name: InsertVolume :exec
 -- 巻を新規登録
 INSERT INTO volume (id, comic_id, volume_number) VALUES ($1, $2, $3);
+
+-- name: DeleteVolumeByComicIdAndNumber :exec
+-- 指定漫画の指定巻数の巻を削除
+DELETE FROM volume WHERE comic_id = $1 AND volume_number = $2;

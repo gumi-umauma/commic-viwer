@@ -6,7 +6,7 @@
 
 ## sqlc
 
-SQLからTypescriptの型定義を生成する
+SQLからTypescriptの型定義を生成する。
 
 ```bash
 cd web && sqlc generate

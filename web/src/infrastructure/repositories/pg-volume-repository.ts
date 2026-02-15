@@ -8,6 +8,7 @@ import {
   findVolumesByComicId,
   findVolumeByComicIdAndNumber,
   insertVolume,
+  deleteVolumeByComicIdAndNumber,
 } from "@/infrastructure/db/volume_sql";
 
 export class PgVolumeRepository implements VolumeRepository {
@@ -47,6 +48,16 @@ export class PgVolumeRepository implements VolumeRepository {
       id: volume.id.value,
       comicId: volume.comicId.value,
       volumeNumber: volume.volumeNumber.value,
+    });
+  }
+
+  async deleteByComicIdAndNumber(
+    comicId: ComicId,
+    number: VolumeNumber
+  ): Promise<void> {
+    await deleteVolumeByComicIdAndNumber(this.pool, {
+      comicId: comicId.value,
+      volumeNumber: number.value,
     });
   }
 }

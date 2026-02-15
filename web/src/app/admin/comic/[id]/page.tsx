@@ -38,11 +38,13 @@ export default async function AdminComicDetailPage({ params }: Props) {
       {comic.volumes.length > 0 ? (
         <ul className="space-y-2">
           {comic.volumes.map((volume) => (
-            <li
-              key={volume.id}
-              className="block p-4 border rounded"
-            >
-              第{volume.volumeNumber}巻
+            <li key={volume.id}>
+              <Link
+                href={`/admin/comic/${comic.id}/volume/${volume.volumeNumber}`}
+                className="block p-4 border rounded hover:bg-gray-50 transition-colors"
+              >
+                第{volume.volumeNumber}巻
+              </Link>
             </li>
           ))}
         </ul>

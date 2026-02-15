@@ -85,3 +85,19 @@ export async function insertVolume(client: Client, args: InsertVolumeArgs): Prom
     });
 }
 
+export const deleteVolumeByComicIdAndNumberQuery = `-- name: DeleteVolumeByComicIdAndNumber :exec
+DELETE FROM volume WHERE comic_id = $1 AND volume_number = $2`;
+
+export interface DeleteVolumeByComicIdAndNumberArgs {
+    comicId: string;
+    volumeNumber: number;
+}
+
+export async function deleteVolumeByComicIdAndNumber(client: Client, args: DeleteVolumeByComicIdAndNumberArgs): Promise<void> {
+    await client.query({
+        text: deleteVolumeByComicIdAndNumberQuery,
+        values: [args.comicId, args.volumeNumber],
+        rowMode: "array"
+    });
+}
+

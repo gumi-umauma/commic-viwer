@@ -1,4 +1,4 @@
-import { copyFile, mkdir, readdir, rename } from "fs/promises";
+import { copyFile, mkdir, readdir, rename, rm } from "fs/promises";
 import { existsSync } from "fs";
 import path from "path";
 
@@ -162,6 +162,25 @@ export class PageFileScanner {
     }
 
     return imageFiles.length;
+  }
+
+  async moveSourceToRegistered(sourceFolderName: string): Promise<void> {
+    const baseWorkDir = path.resolve(this.mangaDataDir, WORK_DIR_NAME);
+    const sourceDir = path.resolve(baseWorkDir, sourceFolderName);
+
+    if (!sourceDir.startsWith(baseWorkDir)) {
+      throw new Error("Invalid source directory path");
+    }
+
+    const registeredDir = path.resolve(baseWorkDir, "registered");
+    await mkdir(registeredDir, { recursive: true });
+
+    const destDir = path.resolve(registeredDir, sourceFolderName);
+    if (existsSync(destDir)) {
+      await rm(destDir, { recursive: true });
+    }
+
+    await rename(sourceDir, destDir);
   }
 
   getAbsolutePath(directoryPath: string, filename: string): string {
