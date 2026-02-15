@@ -10,11 +10,11 @@ export default async function AdminComicRegisterPage() {
     <main className="min-h-screen p-8">
       <Link
         href="/admin/comics"
-        className="text-blue-600 hover:underline mb-4 inline-block"
+        className="text-primary text-[13px] hover:underline mb-4 inline-block"
       >
         &larr; 漫画管理一覧
       </Link>
-      <h1 className="text-2xl font-bold mb-4">漫画新規登録</h1>
+      <h1 className="text-[22px] font-semibold text-heading mb-4">漫画新規登録</h1>
       <RegisterForm folders={folders} />
     </main>
   );

@@ -48,36 +48,36 @@ export function ComicTitleEditor({ comicId, initialTitle }: Props) {
             type="text"
             value={editValue}
             onChange={(e) => setEditValue(e.target.value)}
-            className="text-2xl font-bold border rounded px-2 py-1 flex-1"
+            className="text-[22px] font-semibold bg-surface border border-outline rounded px-2 py-1 flex-1 focus:border-outline-focus focus:outline-none"
             disabled={isPending}
             autoFocus
           />
           <button
             onClick={handleSave}
             disabled={isPending}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors disabled:opacity-50"
+            className="px-4 py-2 text-[14px] bg-primary text-on-primary rounded hover:bg-primary-hover transition-colors disabled:opacity-50"
           >
             保存
           </button>
           <button
             onClick={handleCancel}
             disabled={isPending}
-            className="px-4 py-2 border rounded hover:bg-gray-50 transition-colors disabled:opacity-50"
+            className="px-4 py-2 text-[14px] bg-surface border border-outline rounded hover:bg-surface-hover transition-colors disabled:opacity-50"
           >
             キャンセル
           </button>
         </div>
-        {error && <p className="text-red-600 text-sm mt-1">{error}</p>}
+        {error && <p className="text-danger text-sm mt-1">{error}</p>}
       </div>
     );
   }
 
   return (
     <div className="flex items-center gap-2 mb-4">
-      <h1 className="text-2xl font-bold">{title}</h1>
+      <h1 className="text-[22px] font-semibold text-heading">{title}</h1>
       <button
         onClick={() => setIsEditing(true)}
-        className="px-3 py-1 text-sm border rounded hover:bg-gray-50 transition-colors"
+        className="px-3 py-1 text-[14px] bg-surface border border-outline rounded hover:bg-surface-hover transition-colors"
       >
         編集
       </button>

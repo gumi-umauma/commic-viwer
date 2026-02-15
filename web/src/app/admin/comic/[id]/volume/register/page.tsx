@@ -30,11 +30,11 @@ export default async function AdminVolumeRegisterPage({ params }: Props) {
     <main className="min-h-screen p-8">
       <Link
         href={`/admin/comic/${comic.id}`}
-        className="text-blue-600 hover:underline mb-4 inline-block"
+        className="text-primary text-[13px] hover:underline mb-4 inline-block"
       >
         &larr; {comic.title}
       </Link>
-      <h1 className="text-2xl font-bold mb-4">巻追加 - {comic.title}</h1>
+      <h1 className="text-[22px] font-semibold text-heading mb-4">巻追加 - {comic.title}</h1>
       <VolumeRegisterForm
         comicId={comic.id}
         defaultVolumeNumber={defaultVolumeNumber}

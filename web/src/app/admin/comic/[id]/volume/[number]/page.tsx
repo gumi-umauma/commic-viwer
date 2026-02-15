@@ -30,7 +30,7 @@ export default async function AdminVolumeDetailPage({ params }: Props) {
       <nav className="mb-4">
         <Link
           href={`/admin/comic/${volume.comicId}`}
-          className="text-blue-600 hover:underline"
+          className="text-primary text-[13px] hover:underline"
         >
           &larr; {volume.comicTitle}
         </Link>
@@ -38,10 +38,10 @@ export default async function AdminVolumeDetailPage({ params }: Props) {
 
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold">
+          <h1 className="text-[22px] font-semibold text-heading">
             {volume.comicTitle} - 第{volume.volumeNumber}巻
           </h1>
-          <p className="text-gray-600 mt-1">ページ数: {volume.pages.length}</p>
+          <p className="text-secondary text-[11px] mt-1">ページ数: {volume.pages.length}</p>
         </div>
         <DeleteVolumeButton
           comicId={volume.comicId}

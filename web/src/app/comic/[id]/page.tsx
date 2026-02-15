@@ -20,23 +20,29 @@ export default async function ComicDetailPage({ params }: Props) {
   return (
     <main className="min-h-screen p-8">
       <nav className="mb-4">
-        <Link href="/comics" className="text-blue-600 hover:underline">
+        <Link href="/comics" className="text-primary text-[13px] hover:underline">
           &larr; 漫画一覧
         </Link>
       </nav>
-      <h1 className="text-2xl font-bold mb-4">{comic.title}</h1>
-      <ul className="space-y-2">
+      <h1 className="text-[22px] font-semibold text-heading mb-4">{comic.title}</h1>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {comic.volumes.map((volume) => (
-          <li key={volume.id}>
-            <Link
-              href={`/comic/${comic.id}/volume/${volume.volumeNumber}`}
-              className="block p-4 border rounded hover:bg-gray-50 transition-colors"
-            >
+          <Link
+            key={volume.id}
+            href={`/comic/${comic.id}/volume/${volume.volumeNumber}`}
+            className="bg-surface border border-outline rounded overflow-hidden hover:bg-surface-hover transition-colors"
+          >
+            <img
+              src={`/api/comic/${comic.id}/volume/${volume.volumeNumber}/page/1`}
+              alt={`第${volume.volumeNumber}巻`}
+              className="w-full aspect-[2/3] object-cover bg-placeholder"
+            />
+            <p className="p-2 text-body text-sm font-medium">
               第{volume.volumeNumber}巻
-            </Link>
-          </li>
+            </p>
+          </Link>
         ))}
-      </ul>
+      </div>
     </main>
   );
 }

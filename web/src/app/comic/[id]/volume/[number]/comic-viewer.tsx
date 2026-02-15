@@ -144,7 +144,7 @@ export function ComicViewer({
       >
         <Link
           href={`/comic/${comicId}`}
-          className="text-blue-300 hover:underline"
+          className="text-on-primary hover:underline"
           onClick={(e) => e.stopPropagation()}
         >
           &larr; 巻一覧
@@ -156,11 +156,11 @@ export function ComicViewer({
 
       {/* ページ画像 */}
       {pages.length === 0 ? (
-        <div className="p-8 text-center text-gray-500">
+        <div className="p-8 text-center text-muted">
           ページが見つかりません
         </div>
       ) : (
-        <div className="flex flex-col items-center bg-gray-100">
+        <div className="flex flex-col items-center bg-placeholder">
           {pages.map((page, index) => (
             <img
               key={page.pageNumber}
@@ -204,7 +204,7 @@ export function ComicViewer({
             </button>
             <Link
               href={`/comic/${comicId}/volume/${nextVolumeNumber}`}
-              className="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold transition-colors"
+              className="inline-block px-6 py-3 bg-primary hover:bg-primary-hover text-on-primary rounded-lg font-bold transition-colors"
               onClick={(e) => e.stopPropagation()}
             >
               第{nextVolumeNumber}巻へ進む

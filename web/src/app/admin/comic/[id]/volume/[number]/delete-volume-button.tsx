@@ -28,7 +28,7 @@ export function DeleteVolumeButton({ comicId, volumeNumber }: Props) {
     <button
       onClick={handleDelete}
       disabled={isPending}
-      className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors disabled:opacity-50"
+      className="px-4 py-2 text-[14px] border border-danger text-danger rounded hover:bg-danger hover:text-danger-fg transition-colors disabled:opacity-50"
     >
       {isPending ? "削除中..." : "巻を削除"}
     </button>

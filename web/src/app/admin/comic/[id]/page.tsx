@@ -22,7 +22,7 @@ export default async function AdminComicDetailPage({ params }: Props) {
   return (
     <main className="min-h-screen p-8">
       <nav className="mb-4">
-        <Link href="/admin/comics" className="text-blue-600 hover:underline">
+        <Link href="/admin/comics" className="text-primary text-[13px] hover:underline">
           &larr; 漫画管理一覧
         </Link>
       </nav>
@@ -30,7 +30,7 @@ export default async function AdminComicDetailPage({ params }: Props) {
       <div className="mb-4">
         <Link
           href={`/admin/comic/${comic.id}/volume/register`}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors inline-block"
+          className="px-4 py-2 text-[14px] bg-primary text-on-primary rounded hover:bg-primary-hover transition-colors inline-block"
         >
           巻を追加
         </Link>
@@ -41,7 +41,7 @@ export default async function AdminComicDetailPage({ params }: Props) {
             <li key={volume.id}>
               <Link
                 href={`/admin/comic/${comic.id}/volume/${volume.volumeNumber}`}
-                className="block p-4 border rounded hover:bg-gray-50 transition-colors"
+                className="block p-4 bg-surface border border-outline rounded hover:bg-surface-hover transition-colors"
               >
                 第{volume.volumeNumber}巻
               </Link>
@@ -49,9 +49,9 @@ export default async function AdminComicDetailPage({ params }: Props) {
           ))}
         </ul>
       ) : (
-        <p className="text-gray-500">巻が登録されていません</p>
+        <p className="text-muted">巻が登録されていません</p>
       )}
-      <div className="mt-8 pt-4 border-t">
+      <div className="mt-8 pt-4 border-t border-outline">
         <DeleteComicButton comicId={comic.id} />
       </div>
     </main>

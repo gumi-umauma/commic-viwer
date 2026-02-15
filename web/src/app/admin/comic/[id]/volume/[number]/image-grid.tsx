@@ -56,7 +56,7 @@ export function ImageGrid({ pages }: Props) {
             onClick={() => setSelectedIndex(index)}
             className="text-center group cursor-pointer"
           >
-            <div className="aspect-[3/4] overflow-hidden rounded border border-gray-200 group-hover:border-blue-500 transition-colors">
+            <div className="aspect-[3/4] overflow-hidden rounded border border-outline group-hover:border-outline-focus transition-colors">
               <img
                 src={page.imageUrl}
                 alt={`ページ ${page.pageNumber}`}
@@ -64,7 +64,7 @@ export function ImageGrid({ pages }: Props) {
                 className="w-full h-full object-cover"
               />
             </div>
-            <p className="mt-0.5 text-xs text-gray-600">
+            <p className="mt-0.5 text-[11px] text-secondary">
               {String(page.pageNumber).padStart(4, "0")}
             </p>
           </button>

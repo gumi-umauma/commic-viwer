@@ -55,7 +55,7 @@ export function VolumeRegisterForm({
           min={1}
           value={volumeNumber}
           onChange={(e) => setVolumeNumber(parseInt(e.target.value, 10))}
-          className="border rounded px-3 py-2 w-32"
+          className="bg-surface border border-outline rounded px-3 py-2 w-32 focus:border-outline-focus focus:outline-none"
           disabled={isPending}
         />
       </div>
@@ -63,17 +63,17 @@ export function VolumeRegisterForm({
       <div className="mb-4">
         <label className="block font-semibold mb-1">ソースフォルダ</label>
         {folders.length === 0 ? (
-          <p className="text-gray-500">利用可能なフォルダがありません</p>
+          <p className="text-muted">利用可能なフォルダがありません</p>
         ) : (
-          <ul className="space-y-1 max-h-60 overflow-y-auto border rounded p-2">
+          <ul className="space-y-1 max-h-60 overflow-y-auto border border-outline rounded p-2">
             {folders.map((folder) => (
               <li key={folder}>
                 <button
                   onClick={() => setSelectedFolder(folder)}
                   className={`w-full text-left px-3 py-2 rounded ${
                     selectedFolder === folder
-                      ? "bg-blue-100 border border-blue-400"
-                      : "hover:bg-gray-100"
+                      ? "bg-surface-hover border border-primary"
+                      : "hover:bg-surface-hover"
                   }`}
                   disabled={isPending}
                 >
@@ -88,12 +88,12 @@ export function VolumeRegisterForm({
       <button
         onClick={handleSubmit}
         disabled={isPending || folders.length === 0}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors disabled:opacity-50"
+        className="px-4 py-2 text-[14px] bg-primary text-on-primary rounded hover:bg-primary-hover transition-colors disabled:opacity-50"
       >
         {isPending ? "登録中..." : "登録"}
       </button>
 
-      {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
+      {error && <p className="text-danger text-sm mt-2">{error}</p>}
     </div>
   );
 }

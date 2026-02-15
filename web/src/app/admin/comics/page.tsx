@@ -9,11 +9,11 @@ export default async function AdminComicsPage() {
 
   return (
     <main className="min-h-screen p-8">
-      <h1 className="text-2xl font-bold mb-4">漫画管理</h1>
+      <h1 className="text-[22px] font-semibold text-heading mb-4">漫画管理</h1>
       <div className="mb-4">
         <Link
           href="/admin/comic/register"
-          className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+          className="inline-block px-4 py-2 text-[14px] bg-primary text-on-primary rounded hover:bg-primary-hover transition-colors"
         >
           新規登録
         </Link>
@@ -23,7 +23,7 @@ export default async function AdminComicsPage() {
           <li key={comic.id}>
             <Link
               href={`/admin/comic/${comic.id}`}
-              className="block p-4 border rounded hover:bg-gray-50 transition-colors"
+              className="block p-4 bg-surface border border-outline rounded hover:bg-surface-hover transition-colors"
             >
               {comic.title}
             </Link>

@@ -87,13 +87,13 @@ export function RegisterForm({ folders }: Props) {
 
   return (
     <div>
-      <div className="flex border-b mb-4">
+      <div className="flex border-b border-outline mb-4">
         <button
           onClick={() => handleModeChange("new")}
           className={`px-4 py-2 -mb-px ${
             mode === "new"
-              ? "border-b-2 border-blue-600 text-blue-600 font-semibold"
-              : "text-gray-500 hover:text-gray-700"
+              ? "border-b-2 border-primary text-primary font-semibold"
+              : "text-muted hover:text-secondary"
           }`}
         >
           新規作成
@@ -102,8 +102,8 @@ export function RegisterForm({ folders }: Props) {
           onClick={() => handleModeChange("existing")}
           className={`px-4 py-2 -mb-px ${
             mode === "existing"
-              ? "border-b-2 border-blue-600 text-blue-600 font-semibold"
-              : "text-gray-500 hover:text-gray-700"
+              ? "border-b-2 border-primary text-primary font-semibold"
+              : "text-muted hover:text-secondary"
           }`}
         >
           既存フォルダ
@@ -117,14 +117,14 @@ export function RegisterForm({ folders }: Props) {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="漫画タイトル"
-            className="text-lg border rounded px-3 py-2 flex-1"
+            className="bg-surface border border-outline rounded px-3 py-2 flex-1 focus:border-outline-focus focus:outline-none"
             disabled={isPending}
             autoFocus
           />
           <button
             onClick={handleSubmitNew}
             disabled={isPending}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors disabled:opacity-50"
+            className="px-4 py-2 text-[14px] bg-primary text-on-primary rounded hover:bg-primary-hover transition-colors disabled:opacity-50"
           >
             登録
           </button>
@@ -134,18 +134,18 @@ export function RegisterForm({ folders }: Props) {
       {mode === "existing" && (
         <div>
           {folders.length === 0 ? (
-            <p className="text-gray-500">登録可能なフォルダがありません</p>
+            <p className="text-muted">登録可能なフォルダがありません</p>
           ) : (
             <>
-              <ul className="space-y-1 mb-4 max-h-60 overflow-y-auto border rounded p-2">
+              <ul className="space-y-1 mb-4 max-h-60 overflow-y-auto border border-outline rounded p-2">
                 {folders.map((folder) => (
                   <li key={folder}>
                     <button
                       onClick={() => setSelectedFolder(folder)}
                       className={`w-full text-left px-3 py-2 rounded ${
                         selectedFolder === folder
-                          ? "bg-blue-100 border border-blue-400"
-                          : "hover:bg-gray-100"
+                          ? "bg-surface-hover border border-primary"
+                          : "hover:bg-surface-hover"
                       }`}
                       disabled={isPending}
                     >
@@ -161,7 +161,7 @@ export function RegisterForm({ folders }: Props) {
                     検出された巻（{selectedFolder}）
                   </h3>
                   {isLoadingVolumes ? (
-                    <p className="text-gray-500">検出中...</p>
+                    <p className="text-muted">検出中...</p>
                   ) : detectedVolumes.length > 0 ? (
                     <ul className="space-y-1">
                       {detectedVolumes.map((num) => (
@@ -171,7 +171,7 @@ export function RegisterForm({ folders }: Props) {
                       ))}
                     </ul>
                   ) : (
-                    <p className="text-gray-500">
+                    <p className="text-muted">
                       巻フォルダが見つかりません
                     </p>
                   )}
@@ -181,7 +181,7 @@ export function RegisterForm({ folders }: Props) {
               <button
                 onClick={handleSubmitExisting}
                 disabled={isPending || !selectedFolder}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors disabled:opacity-50"
+                className="px-4 py-2 text-[14px] bg-primary text-on-primary rounded hover:bg-primary-hover transition-colors disabled:opacity-50"
               >
                 登録
               </button>
@@ -190,7 +190,7 @@ export function RegisterForm({ folders }: Props) {
         </div>
       )}
 
-      {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
+      {error && <p className="text-danger text-sm mt-2">{error}</p>}
     </div>
   );
 }
