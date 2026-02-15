@@ -9,6 +9,8 @@ title: 機能仕様
 - 一覧は複数形（`/comics`）
 - 特定リソースは単数形（`/comic/[id]`）
 
+## [認証機能](./auth.md)
+
 ## 画面仕様
 
 ### ユーザー機能（スマートフォン向け）
@@ -27,3 +29,4 @@ title: 機能仕様
 | 漫画管理詳細 | [comic-detail.md](./admin/comic-detail.md)     |
 | 漫画新規登録 | [comic-register.md](./admin/comic-register.md) |
 | 巻追加       | [volume-register.md](./admin/volume-register.md) |
+| ユーザー管理 | （管理画面 `/admin/user`）                         |
