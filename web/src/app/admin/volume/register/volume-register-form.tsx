@@ -16,11 +16,16 @@ type Props = {
 
 export function VolumeRegisterForm({ comics, folders }: Props) {
   const [selectedComicId, setSelectedComicId] = useState<string>("");
+  const [comicFilterText, setComicFilterText] = useState<string>("");
   const [volumeNumber, setVolumeNumber] = useState<number>(1);
   const [selectedFolder, setSelectedFolder] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+
+  const filteredComics = comics.filter((comic) =>
+    comic.title.toLowerCase().includes(comicFilterText.toLowerCase())
+  );
 
   const handleComicChange = (comicId: string) => {
     setSelectedComicId(comicId);
@@ -70,14 +75,34 @@ export function VolumeRegisterForm({ comics, folders }: Props) {
     <div>
       <div className="mb-4">
         <label className="block font-semibold mb-1">漫画</label>
+        <input
+          type="text"
+          value={comicFilterText}
+          onChange={(e) => {
+            setComicFilterText(e.target.value);
+            if (selectedComicId) {
+              const stillVisible = comics.some(
+                (c) =>
+                  c.id === selectedComicId &&
+                  c.title.toLowerCase().includes(e.target.value.toLowerCase())
+              );
+              if (!stillVisible) {
+                handleComicChange("");
+              }
+            }
+          }}
+          placeholder="タイトルで絞り込み"
+          className="bg-surface border border-outline rounded px-3 py-2 w-64 mb-2 focus:border-outline-focus focus:outline-none text-body text-sm"
+          disabled={isPending}
+        />
         <select
           value={selectedComicId}
           onChange={(e) => handleComicChange(e.target.value)}
-          className="bg-surface border border-outline rounded px-3 py-2 w-64 focus:border-outline-focus focus:outline-none"
+          className="bg-surface border border-outline rounded px-3 py-2 w-64 block focus:border-outline-focus focus:outline-none"
           disabled={isPending}
         >
           <option value="">選択してください</option>
-          {comics.map((comic) => (
+          {filteredComics.map((comic) => (
             <option key={comic.id} value={comic.id}>
               {comic.title}
             </option>

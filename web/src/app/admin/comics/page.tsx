@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { container } from "@/infrastructure/container";
 import { GetAdminComicsUseCase } from "@/application/usecases/get-admin-comics";
+import { AdminComicsList } from "./admin-comics-list";
 
 export default async function AdminComicsPage() {
   const getAdminComicsUseCase =
@@ -24,18 +25,7 @@ export default async function AdminComicsPage() {
           巻を追加
         </Link>
       </div>
-      <ul className="space-y-2">
-        {comics.map((comic) => (
-          <li key={comic.id}>
-            <Link
-              href={`/admin/comic/${comic.id}`}
-              className="block p-4 bg-surface border border-outline rounded hover:bg-surface-hover transition-colors"
-            >
-              {comic.title}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <AdminComicsList comics={comics} />
     </main>
   );
 }
