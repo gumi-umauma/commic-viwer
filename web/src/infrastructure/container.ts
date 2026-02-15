@@ -10,6 +10,7 @@ import { RegisterComicFromExistingFolderUseCase } from "@/application/usecases/r
 import { DeleteComicUseCase } from "@/application/usecases/delete-comic";
 import { RegisterVolumeUseCase } from "@/application/usecases/register-volume";
 import { DeleteVolumeUseCase } from "@/application/usecases/delete-volume";
+import { DeletePagesUseCase } from "@/application/usecases/delete-pages";
 import { PgComicRepository } from "@/infrastructure/repositories/pg-comic-repository";
 import { PgVolumeRepository } from "@/infrastructure/repositories/pg-volume-repository";
 import { PageFileScanner } from "@/infrastructure/filesystem/page-file-scanner";
@@ -38,6 +39,7 @@ export interface Cradle {
   deleteComicUseCase: DeleteComicUseCase;
   registerVolumeUseCase: RegisterVolumeUseCase;
   deleteVolumeUseCase: DeleteVolumeUseCase;
+  deletePagesUseCase: DeletePagesUseCase;
 }
 
 const container = createContainer<Cradle>();
@@ -101,6 +103,14 @@ container.register({
   deleteVolumeUseCase: asFunction(
     (cradle: Cradle) =>
       new DeleteVolumeUseCase(cradle.comicRepository, cradle.volumeRepository)
+  ).scoped(),
+  deletePagesUseCase: asFunction(
+    (cradle: Cradle) =>
+      new DeletePagesUseCase(
+        cradle.comicRepository,
+        cradle.volumeRepository,
+        cradle.pageFileScanner
+      )
   ).scoped(),
 });
 

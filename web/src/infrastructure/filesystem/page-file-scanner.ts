@@ -1,4 +1,4 @@
-import { copyFile, mkdir, readdir, rename, rm } from "fs/promises";
+import { copyFile, mkdir, readdir, rename, rm, unlink } from "fs/promises";
 import { existsSync } from "fs";
 import path from "path";
 
@@ -181,6 +181,57 @@ export class PageFileScanner {
     }
 
     await rename(sourceDir, destDir);
+  }
+
+  async deletePagesAndRenumber(
+    directoryPath: string,
+    pageNumbers: number[]
+  ): Promise<number> {
+    const absoluteDir = path.resolve(this.mangaDataDir, directoryPath);
+
+    if (!absoluteDir.startsWith(path.resolve(this.mangaDataDir))) {
+      throw new Error("Invalid directory path");
+    }
+
+    const filenames = await this.scanPages(directoryPath);
+    if (filenames.length === 0) {
+      throw new Error("ページが存在しません");
+    }
+
+    const maxPage = filenames.length;
+    for (const p of pageNumbers) {
+      if (p < 1 || p > maxPage) {
+        throw new Error(`無効なページ番号: ${p}`);
+      }
+    }
+
+    const deleteSet = new Set(pageNumbers);
+
+    // Delete specified pages
+    for (const p of deleteSet) {
+      const filename = filenames[p - 1];
+      await unlink(path.join(absoluteDir, filename));
+    }
+
+    // Collect remaining files in order
+    const remaining = filenames.filter((_, i) => !deleteSet.has(i + 1));
+
+    // Renumber remaining files using temp names to avoid collisions
+    for (let i = 0; i < remaining.length; i++) {
+      const oldPath = path.join(absoluteDir, remaining[i]);
+      const tempPath = path.join(absoluteDir, `_temp_${i}`);
+      await rename(oldPath, tempPath);
+    }
+
+    for (let i = 0; i < remaining.length; i++) {
+      const ext = path.extname(remaining[i]).toLowerCase();
+      const newName = `${String(i + 1).padStart(4, "0")}${ext}`;
+      const tempPath = path.join(absoluteDir, `_temp_${i}`);
+      const newPath = path.join(absoluteDir, newName);
+      await rename(tempPath, newPath);
+    }
+
+    return remaining.length;
   }
 
   getAbsolutePath(directoryPath: string, filename: string): string {

@@ -49,7 +49,7 @@ export default async function AdminVolumeDetailPage({ params }: Props) {
         />
       </div>
 
-      <ImageGrid pages={volume.pages} />
+      <ImageGrid pages={volume.pages} comicId={volume.comicId} volumeNumber={volume.volumeNumber} />
     </main>
   );
 }
