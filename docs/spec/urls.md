@@ -15,6 +15,7 @@
 | 漫画管理一覧 | GET | /admin/comics | |
 | 漫画管理詳細 | GET | /admin/comic/{id} | |
 | 漫画新規登録 | GET | /admin/comic/register | |
+| 巻追加 | GET | /admin/comic/{id}/volume/register | |
 
 ## API
 
